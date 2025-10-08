@@ -187,11 +187,29 @@ Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQL
 
 ### Email Client Compatibility
 
-Email ClientCompatibilityNotesGmail✅ ExcellentSupports most HTML/CSSOutlook✅ GoodTable-based layout works bestApple Mail✅ ExcellentFull HTML supportYahoo Mail✅ GoodBasic HTML supportThunderbird✅ ExcellentFull feature support
+✅ Email ClientCompatibilityNotesGmail
+
+✅ ExcellentSupports most HTML/CSSOutlook
+
+✅ GoodTable-based layout works bestApple Mail
+
+✅ ExcellentFull HTML supportYahoo Mail
+
+✅ GoodBasic HTML supportThunderbird
+
+✅ ExcellentFull feature support
 
 ### Browser Support
 
-BrowserVersionSupportChrome60+✅ Full supportFirefox55+✅ Full supportSafari12+✅ Full supportEdge79+✅ Full supportIE11⚠️ Limited
+✅ BrowserVersionSupportChrome60+
+
+✅ Full supportFirefox55+
+
+✅ Full supportSafari12+
+
+✅ Full supportEdge79+
+
+✅ Full supportIE11⚠️ Limited
 
 ### Performance Features
 
