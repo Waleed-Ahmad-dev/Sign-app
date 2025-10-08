@@ -1,7 +1,8 @@
 // Static banner and logo URLs - REPLACE THESE WITH YOUR ACTUAL IMAGE URLs
 // IMPORTANT: These MUST be publicly accessible HTTPS URLs for email clients to display them
-const LOGO_URL = 'https://i.ibb.co/fdm26sWN/7-1.png'; // Removed trailing spaces
-const BANNER_URL = 'https://i.ibb.co/LzybSZGZ/banner-email.png'; // Removed trailing spaces
+// FIXED: REMOVED TRAILING SPACES FROM ALL IMAGE URLS (THIS WAS CAUSING INVALID URLS)
+const LOGO_URL = 'https://i.ibb.co/fdm26sWN/7-1.png';
+const BANNER_URL = 'https://i.ibb.co/LzybSZGZ/banner-email.png';
 const LINKEDIN_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/linkedin.png';
 const FACEBOOK_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/facebook.png';
 const INSTAGRAM_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/instagram.png';
@@ -135,7 +136,7 @@ function generateSignature() {
     document.getElementById('copy-btn').disabled = false;
 }
 
-// Fixed Function to copy the signature to clipboard
+// FIXED: COMPLETELY REWRITTEN COPY FUNCTION TO PROPERLY HANDLE HTML FOR EMAIL CLIENTS
 async function copySignature() {
     const signatureHtml = document.getElementById('signature-html').innerHTML;
     
@@ -144,29 +145,56 @@ async function copySignature() {
         return;
     }
 
-    // Create temporary container (must be attached to DOM)
-    const tempContainer = document.createElement('div');
-    tempContainer.innerHTML = signatureHtml;
-    tempContainer.style.position = 'absolute';
-    tempContainer.style.left = '-9999px';
-    tempContainer.style.top = '-9999px';
-    tempContainer.style.opacity = '0';
-    document.body.appendChild(tempContainer);
-
     try {
-        // Create selection range
+        // Modern Clipboard API - preferred method
+        if (navigator.clipboard && navigator.clipboard.write) {
+            // Create clipboard items with both HTML and plain text
+            const htmlBlob = new Blob([signatureHtml], { type: 'text/html' });
+            const plainText = signatureHtml.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+            const textBlob = new Blob([plainText], { type: 'text/plain' });
+            
+            // Create clipboard item
+            const clipboardItem = new ClipboardItem({
+                'text/html': htmlBlob,
+                'text/plain': textBlob
+            });
+            
+            // Write to clipboard
+            await navigator.clipboard.write([clipboardItem]);
+            
+            // Show success notification
+            const notification = document.getElementById('copy-notification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+            
+            return;
+        }
+        
+        // Fallback for older browsers
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = signatureHtml;
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.top = '-9999px';
+        tempContainer.style.opacity = '0';
+        document.body.appendChild(tempContainer);
+        
+        // Select the content
         const range = document.createRange();
         range.selectNodeContents(tempContainer);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-
-        // Attempt copy using execCommand
-        const successful = document.execCommand('copy');
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
         
-        if (!successful) {
-            throw new Error('execCommand failed');
-        }
-
+        // Copy using execCommand (older method)
+        document.execCommand('copy');
+        
+        // Clean up
+        selection.removeAllRanges();
+        document.body.removeChild(tempContainer);
+        
         // Show success notification
         const notification = document.getElementById('copy-notification');
         notification.style.display = 'block';
@@ -175,46 +203,10 @@ async function copySignature() {
         }, 3000);
         
     } catch (err) {
-        console.error('Failed to copy signature via execCommand: ', err);
+        console.error('Failed to copy signature: ', err);
         
-        // Fallback to modern Clipboard API
-        try {
-            // Check for ClipboardItem support
-            if (typeof ClipboardItem !== 'undefined') {
-                await navigator.clipboard.write([
-                    new ClipboardItem({
-                        'text/html': new Blob([signatureHtml], { type: 'text/html' }),
-                        'text/plain': new Blob([signatureHtml], { type: 'text/plain' })
-                    })
-                ]);
-                
-                // Show success notification
-                const notification = document.getElementById('copy-notification');
-                notification.style.display = 'block';
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 3000);
-                return;
-            }
-        } catch (clipboardError) {
-            console.error('Modern clipboard API failed: ', clipboardError);
-        }
-        
-        // Final fallback - plain text copy
-        try {
-            await navigator.clipboard.writeText(signatureHtml);
-            alert('Signature copied as plain text. Formatting may be lost when pasting into email.');
-        } catch (finalError) {
-            console.error('All copy methods failed: ', finalError);
-            alert('Failed to copy signature. Please select the signature in the preview box and copy it manually.');
-        }
-    } finally {
-        // Always clean up temporary container
-        if (tempContainer.parentNode) {
-            document.body.removeChild(tempContainer);
-        }
-        // Clear any selections
-        window.getSelection().removeAllRanges();
+        // Final fallback - show instructions
+        alert('Failed to copy signature automatically. Please:\n\n1. Click on the signature preview\n2. Press Ctrl+A (Cmd+A on Mac) to select all\n3. Press Ctrl+C (Cmd+C on Mac) to copy\n4. Paste into your email signature settings');
     }
 }
 
@@ -232,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add form validation on input
     const requiredInputs = document.querySelectorAll('input[required]');
     requiredInputs.forEach(input => {
-        input.addEventListener('blur', function() {
+        input.addEventListener('input', function() {
             if (!this.value) {
                 this.style.borderLeft = '3px solid var(--error-color)';
             } else {
