@@ -1,6 +1,11 @@
 // Static banner and logo URLs - REPLACE THESE WITH YOUR ACTUAL IMAGE URLs
-const BANNER_URL = './assets/banner-email.png'; // Replace with your banner image path
-const LOGO_URL = './assets/logo.png'; // Replace with your logo image path
+// IMPORTANT: These MUST be publicly accessible HTTPS URLs for email clients to display them
+const LOGO_URL = 'https://premierchoiceint.com/wp-content/uploads/2023/02/pc-logo.png'; // Removed trailing spaces
+const BANNER_URL = 'https://i.ibb.co/LzybSZGZ/banner-email.png'; // Removed trailing spaces
+const LINKEDIN_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/linkedin.png';
+const FACEBOOK_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/facebook.png';
+const INSTAGRAM_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/instagram.png';
+const YOUTUBE_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/youtube.png';
 
 // Function to generate the email signature
 function generateSignature() {
@@ -24,132 +29,192 @@ function generateSignature() {
         return;
     }
 
-    // Creating signature preview
+    // Ensure website has proper URL format
+    let formattedWebsite = website;
+    if (formattedWebsite && !formattedWebsite.startsWith('http')) {
+        formattedWebsite = 'https://' + formattedWebsite;
+    }
+
+    // Creating signature preview - using table-based layout for email compatibility
     const signatureHTML = `
-        <div class="signature-content">
-            <div class="signature-header">
-                <div class="name">${name}</div>
-            </div>
-            <div class="signature-header">
-                <div class="title">${title}</div>
-            </div>
-            
-            <div class="signature-main">
-                <div class="company-info">
-                    <div class="logo-container">
-                        <img src="${LOGO_URL}" alt="Premier Choice Logo" class="company-logo">
-                    </div>
-                    <div class="contact-info">
-                        <p><strong>M:</strong> ${phone}</p>
-                        ${tel ? `<p><strong>T:</strong> ${tel}</p>` : ''}
-                        <p><strong>E:</strong> <a href="mailto:${email}" style="color: #000; text-decoration: none;">${email}</a></p>
-                        ${website ? `<p><strong>W:</strong> <a href="${website}" target="_blank" style="color: #000; text-decoration: none;">${website}</a></p>` : ''}
-                    </div>
-                </div>
-                
-                <div class="office-addresses">
-                    <p><strong>Dubai Head Office:</strong> ${dubaiOffice}</p>
-                    <p><strong>Pakistan Head Office:</strong> ${pakistanOffice}</p>
-                </div>
-                
-                <img src="${BANNER_URL}" alt="Company Banner" class="signature-banner">
-                
-                <div class="social-links">
-                    <a href="${linkedin}" target="_blank">
-                        <img src="./assets/li.png" alt="LinkedIn" class="social-icon">
-                        LinkedIn
-                    </a>
-                    <a href="${facebook}" target="_blank">
-                        <img src="./assets/fb.png" alt="Facebook" class="social-icon">
-                        Facebook
-                    </a>
-                    <a href="${instagram}" target="_blank">
-                        <img src="./assets/insta.png" alt="Instagram" class="social-icon">
-                        Instagram
-                    </a>
-                    <a href="${youtube}" target="_blank">
-                        <img src="./assets/yt.png" alt="YouTube" class="social-icon">
-                        YouTube
-                    </a>
-                </div>
-                
-                <div class="confidentiality-notice">
-                    <p>CONFIDENTIALITY NOTICE:</p>
-                    <p>This email is confidential and intended for the recipient specified in the message only.</p>
-                    <p>It is strictly forbidden to share any part of this message with any third party.</p>
-                    <p>If you received this message by mistake, please reply to this message and follow with its deletion.</p>
-                </div>
-            </div>
-        </div>
+        <table border="0" cellpadding="0" cellspacing="0" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #333333; line-height: 1.4; max-width: 600px; border-collapse: collapse;">
+            <tr>
+                <td style="padding-bottom: 8px; font-size: 18px; font-weight: bold; color: #000000;">${name}</td>
+            </tr>
+            <tr>
+                <td style="padding-bottom: 12px; font-size: 14px; color: #555555;">${title}</td>
+            </tr>
+            <tr>
+                <td>
+                    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                        <tr>
+                            <td valign="top" style="padding-right: 15px; border-right: 1px solid #000000;">
+                                <img src="${LOGO_URL}" alt="Premier Choice Logo" style="display: block; max-height: 90px; width: auto;">
+                            </td>
+                            <td valign="top" style="padding-left: 15px;">
+                                <p style="margin: 0; padding: 0; font-size: 14px; line-height: 1.4;">
+                                    <strong>M:</strong> ${phone}<br>
+                                    ${tel ? `<strong>T:</strong> ${tel}<br>` : ''}
+                                    <strong>E:</strong> <a href="mailto:${email}" style="color: #000000; text-decoration: none;">${email}</a><br>
+                                    ${website ? `<strong>W:</strong> <a href="${formattedWebsite}" target="_blank" style="color: #000000; text-decoration: none;">${website.replace(/^https?:\/\//, '')}</a>` : ''}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 0 5px 0;">
+                    <p style="margin: 0; padding: 0; font-size: 14px; line-height: 1.4;">
+                        <strong>Dubai Head Office:</strong> ${dubaiOffice}
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 5px 0 10px 0;">
+                    <p style="margin: 0; padding: 0; font-size: 14px; line-height: 1.4;">
+                        <strong>Pakistan Head Office:</strong> ${pakistanOffice}
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 0;">
+                    <img src="${BANNER_URL}" alt="Company Banner" style="display: block; max-width: 100%; height: auto; border: none;">
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 0 5px 0;">
+                    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                        <tr>
+                            <td style="padding-right: 15px;">
+                                <a href="${linkedin}" target="_blank" style="text-decoration: none; color: #000000;">
+                                    <img src="${LINKEDIN_ICON}" alt="LinkedIn" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
+                                    LinkedIn
+                                </a>
+                            </td>
+                            <td style="padding-right: 15px;">
+                                <a href="${facebook}" target="_blank" style="text-decoration: none; color: #000000;">
+                                    <img src="${FACEBOOK_ICON}" alt="Facebook" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
+                                    Facebook
+                                </a>
+                            </td>
+                            <td style="padding-right: 15px;">
+                                <a href="${instagram}" target="_blank" style="text-decoration: none; color: #000000;">
+                                    <img src="${INSTAGRAM_ICON}" alt="Instagram" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
+                                    Instagram
+                                </a>
+                            </td>
+                            <td>
+                                <a href="${youtube}" target="_blank" style="text-decoration: none; color: #000000;">
+                                    <img src="${YOUTUBE_ICON}" alt="YouTube" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
+                                    YouTube
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-top: 10px; font-size: 12px; color: #000000;">
+                    <p style="margin: 5px 0; padding: 0; line-height: 1.4;">CONFIDENTIALITY NOTICE:</p>
+                    <p style="margin: 5px 0; padding: 0; line-height: 1.4;">This email is confidential and intended for the recipient specified in the message only.</p>
+                    <p style="margin: 5px 0; padding: 0; line-height: 1.4;">It is strictly forbidden to share any part of this message with any third party.</p>
+                    <p style="margin: 5px 0; padding: 0; line-height: 1.4;">If you received this message by mistake, please reply to this message and follow with its deletion.</p>
+                </td>
+            </tr>
+        </table>
     `;
 
     // Displaying the signature in the preview box
     document.getElementById('signature-box').innerHTML = signatureHTML;
     
+    // Store clean HTML for copying
+    document.getElementById('signature-html').innerHTML = signatureHTML;
+    
     // Enable the copy button
     document.getElementById('copy-btn').disabled = false;
 }
 
-// Function to copy the signature to clipboard
+// Fixed Function to copy the signature to clipboard
 async function copySignature() {
-    const signatureBox = document.getElementById('signature-box');
-    const signatureContent = signatureBox.querySelector('.signature-content');
+    const signatureHtml = document.getElementById('signature-html').innerHTML;
     
-    if (!signatureContent) {
+    if (!signatureHtml) {
         alert('Please generate a signature first.');
         return;
     }
 
+    // Create temporary container (must be attached to DOM)
+    const tempContainer = document.createElement('div');
+    tempContainer.innerHTML = signatureHtml;
+    tempContainer.style.position = 'absolute';
+    tempContainer.style.left = '-9999px';
+    tempContainer.style.top = '-9999px';
+    tempContainer.style.opacity = '0';
+    document.body.appendChild(tempContainer);
+
     try {
-        // Create a temporary container for the HTML content
-        const tempContainer = document.createElement('div');
-        tempContainer.innerHTML = signatureContent.outerHTML;
-        
-        // Remove any style elements that might interfere with email clients
-        const styles = tempContainer.querySelectorAll('style');
-        styles.forEach(style => style.remove());
-        
-        // Create a range and select the HTML content
+        // Create selection range
         const range = document.createRange();
-        range.selectNode(tempContainer);
+        range.selectNodeContents(tempContainer);
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
-        
-        // Execute copy command
+
+        // Attempt copy using execCommand
         const successful = document.execCommand('copy');
         
-        if (successful) {
-            // Show copy notification
-            const notification = document.getElementById('copy-notification');
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        } else {
-            // Fallback to Clipboard API if execCommand fails
-            const htmlContent = tempContainer.innerHTML;
-            const textContent = tempContainer.textContent || tempContainer.innerText || '';
-            
-            const clipboardItem = new ClipboardItem({
-                'text/html': new Blob([htmlContent], { type: 'text/html' }),
-                'text/plain': new Blob([textContent], { type: 'text/plain' })
-            });
-            
-            await navigator.clipboard.write([clipboardItem]);
-            
-            // Show copy notification
-            const notification = document.getElementById('copy-notification');
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
+        if (!successful) {
+            throw new Error('execCommand failed');
+        }
+
+        // Show success notification
+        const notification = document.getElementById('copy-notification');
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+        
+    } catch (err) {
+        console.error('Failed to copy signature via execCommand: ', err);
+        
+        // Fallback to modern Clipboard API
+        try {
+            // Check for ClipboardItem support
+            if (typeof ClipboardItem !== 'undefined') {
+                await navigator.clipboard.write([
+                    new ClipboardItem({
+                        'text/html': new Blob([signatureHtml], { type: 'text/html' }),
+                        'text/plain': new Blob([signatureHtml], { type: 'text/plain' })
+                    })
+                ]);
+                
+                // Show success notification
+                const notification = document.getElementById('copy-notification');
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+                return;
+            }
+        } catch (clipboardError) {
+            console.error('Modern clipboard API failed: ', clipboardError);
         }
         
-        // Clear selection
+        // Final fallback - plain text copy
+        try {
+            await navigator.clipboard.writeText(signatureHtml);
+            alert('Signature copied as plain text. Formatting may be lost when pasting into email.');
+        } catch (finalError) {
+            console.error('All copy methods failed: ', finalError);
+            alert('Failed to copy signature. Please select the signature in the preview box and copy it manually.');
+        }
+    } finally {
+        // Always clean up temporary container
+        if (tempContainer.parentNode) {
+            document.body.removeChild(tempContainer);
+        }
+        // Clear any selections
         window.getSelection().removeAllRanges();
-    } catch (err) {
-        console.error('Failed to copy signature: ', err);
-        alert('Failed to copy signature. Please select and copy the signature manually.');
     }
 }
 
@@ -189,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add input validation for website format
     document.getElementById('website').addEventListener('blur', function() {
         if (this.value && !this.value.startsWith('http')) {
-            this.value = 'http://' + this.value;
+            this.value = 'https://' + this.value;
         }
     });
 });
