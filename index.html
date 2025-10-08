@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Signature Generator | Premier Choice</title>
+    <title>Email Signature Generator | Premier Choice International</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Modern Color Scheme & Variables */
+        /* Premier Choice International Color Scheme & Variables */
         :root {
-            --primary-gradient: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
-            --secondary-gradient: linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%);
-            --accent-color: #7C3AED;
-            --accent-light: #8B5CF6;
-            --accent-hover: #6D28D9;
+            --primary-gradient: linear-gradient(135deg, #003366 0%, #001F3F 100%);
+            --secondary-gradient: linear-gradient(135deg, #009688 0%, #00796B 100%);
+            --accent-color: #009688;
+            --accent-light: #4DB6AC;
+            --accent-hover: #00796B;
             --success-color: #10B981;
             --success-light: #ECFDF5;
             --warning-color: #F59E0B;
@@ -35,8 +35,8 @@
 
         /* Dark Mode Variables */
         .dark-mode {
-            --primary-gradient: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
-            --secondary-gradient: linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%);
+            --primary-gradient: linear-gradient(135deg, #003366 0%, #001F3F 100%);
+            --secondary-gradient: linear-gradient(135deg, #009688 0%, #00796B 100%);
             --light-bg: #0F172A;
             --card-bg: #1E293B;
             --text-dark: #F1F5F9;
@@ -182,7 +182,7 @@
 
         .section-title i {
             color: var(--accent-color);
-            background: rgba(124, 58, 237, 0.1);
+            background: rgba(0, 150, 136, 0.1);
             padding: 8px;
             border-radius: 8px;
         }
@@ -236,7 +236,7 @@
         .input-group input:focus {
             outline: none;
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.1);
         }
 
         .input-group input:disabled {
@@ -329,24 +329,24 @@
         .generate-btn {
             background: var(--secondary-gradient);
             color: white;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.3);
         }
 
         .generate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 150, 136, 0.4);
         }
 
         .copy-btn {
             background: var(--accent-color);
             color: white;
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.3);
         }
 
         .copy-btn:hover {
             background: var(--accent-hover);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 150, 136, 0.4);
         }
 
         .copy-btn:disabled {
@@ -392,7 +392,7 @@
 
         .preview-header h2 i {
             color: var(--accent-color);
-            background: rgba(124, 58, 237, 0.1);
+            background: rgba(0, 150, 136, 0.1);
             padding: 8px;
             border-radius: 8px;
         }
@@ -634,8 +634,8 @@
         <div class="header">
             <div class="header-content">
                 <div>
-                    <h1><i class="fas fa-signature"></i> Email Signature Generator</h1>
-                    <p class="subtitle">Create a professional email signature in seconds with our modern, easy-to-use tool</p>
+                    <h1><i class="fas fa-signature"></i> Premier Choice International Signature Generator</h1>
+                    <p class="subtitle">Create a professional email signature for Premier Choice International in seconds with our modern, easy-to-use tool</p>
                 </div>
                 <button class="theme-toggle" id="theme-toggle">
                     <i class="fas fa-moon"></i>
@@ -685,7 +685,7 @@
                             </label>
                             <input type="text" id="title" placeholder="Enter your job title" required>
                             <div class="input-hint">
-                                <i class="fas fa-info-circle"></i> Your professional position at the company
+                                <i class="fas fa-info-circle"></i> Your professional position at Premier Choice International
                             </div>
                         </div>
                     </div>
@@ -713,7 +713,7 @@
                             <label for="website">
                                 <i class="fas fa-globe"></i> Website URL
                             </label>
-                            <input type="text" id="website" placeholder="Enter your website URL (e.g., www.premierchoiceint.com)">
+                            <input type="text" id="website" placeholder="Enter your website URL (e.g., www.premierchoiceint.com)" value="www.premierchoiceint.com" disabled>
                         </div>
                     </div>
 
@@ -803,7 +803,7 @@
                         <div class="placeholder">
                             <i class="fas fa-signature"></i>
                             <h3>Your Signature Preview</h3>
-                            <p>Fill out the form and click "Generate Signature" to see your professional email signature here</p>
+                            <p>Fill out the form and click "Generate Signature" to see your professional Premier Choice International email signature here</p>
                         </div>
                     </div>
                 </div>
@@ -922,7 +922,7 @@
                             <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
                                     <td valign="top">
-                                        <img src="${LOGO_URL}" alt="Premier Choice Logo" style="display: block; max-height: 90px; width: auto;">
+                                        <img src="${LOGO_URL}" alt="Premier Choice International Logo" style="display: block; max-height: 90px; width: auto;">
                                     </td>
                                     <td valign="top" style="padding-left: 15px;">
                                         <p style="margin: 0; padding: 0; font-size: 14px; line-height: 1.4;">
@@ -952,7 +952,7 @@
                     </tr>
                     <tr>
                         <td style="padding: 10px 0;">
-                            <img src="${BANNER_URL}" alt="Company Banner" style="display: block; max-width: 100%; height: auto; border: none;">
+                            <img src="${BANNER_URL}" alt="Premier Choice International Banner" style="display: block; max-width: 100%; height: auto; border: none;">
                         </td>
                     </tr>
                     <tr>
