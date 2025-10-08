@@ -3,10 +3,10 @@
 // FIXED: REMOVED TRAILING SPACES FROM ALL IMAGE URLS (THIS WAS CAUSING INVALID URLS)
 const LOGO_URL = 'https://i.ibb.co/fdm26sWN/7-1.png';
 const BANNER_URL = 'https://i.ibb.co/LzybSZGZ/banner-email.png';
-const LINKEDIN_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/linkedin.png';
-const FACEBOOK_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/facebook.png';
-const INSTAGRAM_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/instagram.png';
-const YOUTUBE_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/youtube.png';
+const LINKEDIN_ICON = "https://i.ibb.co/gbV8yQhV/li.png";
+const FACEBOOK_ICON = "https://i.ibb.co/S4F4J6jj/fb.png";
+const INSTAGRAM_ICON = "https://i.ibb.co/3tHTSpL/insta.png";
+const YOUTUBE_ICON = "https://i.ibb.co/S41zxN1W/yt.png";
 
 // Function to generate the email signature
 function generateSignature() {
