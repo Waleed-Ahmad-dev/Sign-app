@@ -1,6 +1,6 @@
 // Static banner and logo URLs - REPLACE THESE WITH YOUR ACTUAL IMAGE URLs
 // IMPORTANT: These MUST be publicly accessible HTTPS URLs for email clients to display them
-const LOGO_URL = 'https://premierchoiceint.com/wp-content/uploads/2023/02/pc-logo.png'; // Removed trailing spaces
+const LOGO_URL = 'https://i.ibb.co/fdm26sWN/7-1.png'; // Removed trailing spaces
 const BANNER_URL = 'https://i.ibb.co/LzybSZGZ/banner-email.png'; // Removed trailing spaces
 const LINKEDIN_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/linkedin.png';
 const FACEBOOK_ICON = 'https://premierchoiceint.com/wp-content/uploads/2023/02/facebook.png';
@@ -48,7 +48,7 @@ function generateSignature() {
                 <td>
                     <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                         <tr>
-                            <td valign="top" style="padding-right: 15px; border-right: 1px solid #000000;">
+                            <td valign="top">
                                 <img src="${LOGO_URL}" alt="Premier Choice Logo" style="display: block; max-height: 90px; width: auto;">
                             </td>
                             <td valign="top" style="padding-left: 15px;">
