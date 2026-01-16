@@ -262,6 +262,71 @@
             gap: 5px;
         }
 
+        /* File Upload Styles */
+        .file-upload-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .file-upload-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .file-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            background: var(--card-bg);
+            color: var(--text-dark);
+        }
+
+        .file-browse-btn {
+            padding: 12px 20px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .file-browse-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .upload-hint {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .use-default-btn {
+            padding: 8px 16px;
+            background: var(--border-color);
+            color: var(--text-medium);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            margin-top: 5px;
+            align-self: flex-start;
+        }
+
+        .use-default-btn:hover {
+            background: #CBD5E1;
+        }
+
         /* Section Dividers */
         .section-divider {
             position: relative;
@@ -549,6 +614,52 @@
             font-weight: 500;
         }
 
+        /* Image Preview Styles */
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            position: relative;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: var(--error-color);
+            color: white;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .image-preview:hover .remove-image-btn {
+            opacity: 1;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             body {
@@ -589,6 +700,15 @@
                 min-height: 400px;
                 padding: 20px;
             }
+            
+            .file-upload-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .file-browse-btn {
+                width: 100%;
+            }
         }
 
         @media (max-width: 480px) {
@@ -627,6 +747,15 @@
         .dark-mode .signature-box {
             background: #1E293B;
         }
+
+        .dark-mode .use-default-btn {
+            background: #334155;
+            color: #CBD5E1;
+        }
+
+        .dark-mode .use-default-btn:hover {
+            background: #475569;
+        }
     </style>
 </head>
 <body>
@@ -664,6 +793,10 @@
                     </div>
                     <div class="step" id="step3">
                         <div class="step-icon">3</div>
+                        <div class="step-text">Custom Images</div>
+                    </div>
+                    <div class="step" id="step4">
+                        <div class="step-icon">4</div>
                         <div class="step-text">Social & Generate</div>
                     </div>
                 </div>
@@ -713,11 +846,124 @@
                             <label for="website">
                                 <i class="fas fa-globe"></i> Website URL
                             </label>
-                            <input type="text" id="website" placeholder="Enter your website URL (e.g., www.premierchoiceint.com)" value="www.premierchoiceint.com" disabled>
+                            <input type="text" id="website" placeholder="Enter your website URL (e.g., www.premierchoiceint.com)">
+                            <div class="input-hint">
+                                <i class="fas fa-info-circle"></i> Leave empty to use default company website
+                            </div>
                         </div>
                     </div>
 
                     <div id="step3-content" style="display: none;">
+                        <div class="section-divider">
+                            <span>Company Images</span>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="file-upload-group">
+                                <label for="logo-upload">
+                                    <i class="fas fa-image"></i> Company Logo
+                                </label>
+                                <div class="file-upload-wrapper">
+                                    <input type="text" id="logo-url" class="file-input" placeholder="Leave empty to use default logo">
+                                    <button type="button" class="file-browse-btn" id="logo-browse-btn">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <input type="file" id="logo-upload" accept="image/*" style="display: none;">
+                                <div class="image-preview-container" id="logo-preview-container"></div>
+                                <button type="button" class="use-default-btn" data-target="logo">Use Default Logo</button>
+                                <div class="upload-hint">
+                                    <i class="fas fa-info-circle"></i> Recommended size: 200x60px. Upload or paste image URL
+                                </div>
+                            </div>
+
+                            <div class="file-upload-group">
+                                <label for="banner-upload">
+                                    <i class="fas fa-image"></i> Email Banner
+                                </label>
+                                <div class="file-upload-wrapper">
+                                    <input type="text" id="banner-url" class="file-input" placeholder="Leave empty to use default banner">
+                                    <button type="button" class="file-browse-btn" id="banner-browse-btn">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <input type="file" id="banner-upload" accept="image/*" style="display: none;">
+                                <div class="image-preview-container" id="banner-preview-container"></div>
+                                <button type="button" class="use-default-btn" data-target="banner">Use Default Banner</button>
+                                <div class="upload-hint">
+                                    <i class="fas fa-info-circle"></i> Recommended size: 600x150px. Upload or paste image URL
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-divider">
+                            <span>Social Media Icons</span>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="file-upload-group">
+                                <label for="linkedin-icon-upload">
+                                    <i class="fab fa-linkedin"></i> LinkedIn Icon
+                                </label>
+                                <div class="file-upload-wrapper">
+                                    <input type="text" id="linkedin-icon-url" class="file-input" placeholder="Leave empty to use default icon">
+                                    <button type="button" class="file-browse-btn" id="linkedin-icon-browse-btn">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <input type="file" id="linkedin-icon-upload" accept="image/*" style="display: none;">
+                                <div class="image-preview-container" id="linkedin-icon-preview-container"></div>
+                                <button type="button" class="use-default-btn" data-target="linkedin-icon">Use Default Icon</button>
+                            </div>
+
+                            <div class="file-upload-group">
+                                <label for="facebook-icon-upload">
+                                    <i class="fab fa-facebook"></i> Facebook Icon
+                                </label>
+                                <div class="file-upload-wrapper">
+                                    <input type="text" id="facebook-icon-url" class="file-input" placeholder="Leave empty to use default icon">
+                                    <button type="button" class="file-browse-btn" id="facebook-icon-browse-btn">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <input type="file" id="facebook-icon-upload" accept="image/*" style="display: none;">
+                                <div class="image-preview-container" id="facebook-icon-preview-container"></div>
+                                <button type="button" class="use-default-btn" data-target="facebook-icon">Use Default Icon</button>
+                            </div>
+
+                            <div class="file-upload-group">
+                                <label for="instagram-icon-upload">
+                                    <i class="fab fa-instagram"></i> Instagram Icon
+                                </label>
+                                <div class="file-upload-wrapper">
+                                    <input type="text" id="instagram-icon-url" class="file-input" placeholder="Leave empty to use default icon">
+                                    <button type="button" class="file-browse-btn" id="instagram-icon-browse-btn">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <input type="file" id="instagram-icon-upload" accept="image/*" style="display: none;">
+                                <div class="image-preview-container" id="instagram-icon-preview-container"></div>
+                                <button type="button" class="use-default-btn" data-target="instagram-icon">Use Default Icon</button>
+                            </div>
+
+                            <div class="file-upload-group">
+                                <label for="youtube-icon-upload">
+                                    <i class="fab fa-youtube"></i> YouTube Icon
+                                </label>
+                                <div class="file-upload-wrapper">
+                                    <input type="text" id="youtube-icon-url" class="file-input" placeholder="Leave empty to use default icon">
+                                    <button type="button" class="file-browse-btn" id="youtube-icon-browse-btn">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <input type="file" id="youtube-icon-upload" accept="image/*" style="display: none;">
+                                <div class="image-preview-container" id="youtube-icon-preview-container"></div>
+                                <button type="button" class="use-default-btn" data-target="youtube-icon">Use Default Icon</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="step4-content" style="display: none;">
                         <div class="section-divider">
                             <span>Office Addresses</span>
                         </div>
@@ -727,13 +973,19 @@
                                 <label for="dubai-office">
                                     <i class="fas fa-building"></i> Dubai Office Address
                                 </label>
-                                <input type="text" id="dubai-office" value="Office 1013, Onyx Tower 1, The Greens, Dubai, UAE." disabled>
+                                <input type="text" id="dubai-office" value="Office 1013, Onyx Tower 1, The Greens, Dubai, UAE.">
+                                <div class="input-hint">
+                                    <i class="fas fa-info-circle"></i> You can customize this address
+                                </div>
                             </div>
                             <div class="input-group">
                                 <label for="pakistan-office">
                                     <i class="fas fa-building"></i> Pakistan Office Address
                                 </label>
-                                <input type="text" id="pakistan-office" value="Premier Choice, Bahria Food Street, Phase 7, Islamabad, Pakistan." disabled>
+                                <input type="text" id="pakistan-office" value="Premier Choice, Bahria Food Street, Phase 7, Islamabad, Pakistan.">
+                                <div class="input-hint">
+                                    <i class="fas fa-info-circle"></i> You can customize this address
+                                </div>
                             </div>
                         </div>
 
@@ -746,25 +998,37 @@
                                 <label for="linkedin">
                                     <i class="fab fa-linkedin"></i> LinkedIn URL
                                 </label>
-                                <input type="text" id="linkedin" value="https://www.linkedin.com/company/premier-choice-international/posts/?feedView=all" disabled>
+                                <input type="text" id="linkedin" placeholder="Enter your LinkedIn URL">
+                                <div class="input-hint">
+                                    <i class="fas fa-info-circle"></i> Leave empty to use default company LinkedIn
+                                </div>
                             </div>
                             <div class="input-group">
                                 <label for="facebook">
                                     <i class="fab fa-facebook"></i> Facebook URL
                                 </label>
-                                <input type="text" id="facebook" value="https://www.facebook.com/share/17ANbBfiRm/" disabled>
+                                <input type="text" id="facebook" placeholder="Enter your Facebook URL">
+                                <div class="input-hint">
+                                    <i class="fas fa-info-circle"></i> Leave empty to use default company Facebook
+                                </div>
                             </div>
                             <div class="input-group">
                                 <label for="instagram">
                                     <i class="fab fa-instagram"></i> Instagram URL
                                 </label>
-                                <input type="text" id="instagram" value="https://www.instagram.com/premierchoicepk/" disabled>
+                                <input type="text" id="instagram" placeholder="Enter your Instagram URL">
+                                <div class="input-hint">
+                                    <i class="fas fa-info-circle"></i> Leave empty to use default company Instagram
+                                </div>
                             </div>
                             <div class="input-group">
                                 <label for="youtube">
                                     <i class="fab fa-youtube"></i> YouTube URL
                                 </label>
-                                <input type="text" id="youtube" value="https://www.youtube.com/@premierchoicepk" disabled>
+                                <input type="text" id="youtube" placeholder="Enter your YouTube URL">
+                                <div class="input-hint">
+                                    <i class="fas fa-info-circle"></i> Leave empty to use default company YouTube
+                                </div>
                             </div>
                         </div>
 
@@ -815,20 +1079,34 @@
     </div>
 
     <script>
-        // Static banner and logo URLs - REPLACE THESE WITH YOUR ACTUAL IMAGE URLs
-        // IMPORTANT: These MUST be publicly accessible HTTPS URLs for email clients to display them
-        // FIXED: REMOVED TRAILING SPACES FROM ALL IMAGE URLS (THIS WAS CAUSING INVALID URLS)
-        const LOGO_URL = 'https://pcirealestate.site/wp-content/uploads/2025/10/7-1-1-scaled.png';
-        const BANNER_URL = 'https://pcirealestate.site/wp-content/uploads/2025/10/banner-email-1-scaled.png';
-        const LINKEDIN_ICON = "https://pcirealestate.site/wp-content/uploads/2025/10/linkedin.png";
-        const FACEBOOK_ICON = "https://pcirealestate.site/wp-content/uploads/2025/10/facebook.png";
-        const INSTAGRAM_ICON = "https://pcirealestate.site/wp-content/uploads/2025/10/instagram.png";
-        const YOUTUBE_ICON = "https://pcirealestate.site/wp-content/uploads/2025/10/youtube.png";
+        // Default URLs - will be used if user doesn't upload their own
+        const DEFAULT_LOGO_URL = 'https://pcirealestate.site/wp-content/uploads/2025/10/7-1-1-scaled.png';
+        const DEFAULT_BANNER_URL = 'https://pcirealestate.site/wp-content/uploads/2025/10/banner-email-1-scaled.png';
+        const DEFAULT_LINKEDIN_ICON = "https://pcirealestate.site/wp-content/uploads/2025/10/linkedin.png";
+        const DEFAULT_FACEBOOK_ICON = "https://pcirealestate.site/wp-content/uploads/2025/10/facebook.png";
+        const DEFAULT_INSTAGRAM_ICON = "https://pcirealestate.site/wp-content/uploads/2025/10/instagram.png";
+        const DEFAULT_YOUTUBE_ICON = "https://pcirealestate.site/wp-content/uploads/2025/10/youtube.png";
+        
+        // Default social URLs
+        const DEFAULT_LINKEDIN_URL = "https://www.linkedin.com/company/premier-choice-international/posts/?feedView=all";
+        const DEFAULT_FACEBOOK_URL = "https://www.facebook.com/share/17ANbBfiRm/";
+        const DEFAULT_INSTAGRAM_URL = "https://www.instagram.com/premierchoicepk/";
+        const DEFAULT_YOUTUBE_URL = "https://www.youtube.com/@premierchoicepk";
+        const DEFAULT_WEBSITE_URL = "www.premierchoiceint.com";
 
+        // Store uploaded images as data URLs
+        const uploadedImages = {
+            logo: null,
+            banner: null,
+            linkedinIcon: null,
+            facebookIcon: null,
+            instagramIcon: null,
+            youtubeIcon: null
+        };
 
         // Current step tracking
         let currentStep = 1;
-        const totalSteps = 3;
+        const totalSteps = 4;
 
         // Function to update progress steps
         function updateProgressSteps() {
@@ -854,7 +1132,11 @@
             for (let i = 1; i <= totalSteps; i++) {
                 const stepContent = document.getElementById(`step${i}-content`);
                 if (stepContent) {
-                    stepContent.style.display = i === currentStep ? 'grid' : 'none';
+                    if (i === 3 || i === 4) {
+                        stepContent.style.display = i === currentStep ? 'block' : 'none';
+                    } else {
+                        stepContent.style.display = i === currentStep ? 'grid' : 'none';
+                    }
                 }
             }
             
@@ -881,6 +1163,95 @@
             return true;
         }
 
+        // Function to read uploaded file and convert to data URL
+        function readFileAsDataURL(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                callback(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Function to create image preview
+        function createImagePreview(imageUrl, containerId, imageType) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            if (imageUrl) {
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'image-preview';
+                
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `${imageType} preview`;
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-image-btn';
+                removeBtn.innerHTML = '×';
+                removeBtn.onclick = function() {
+                    uploadedImages[imageType] = null;
+                    document.getElementById(`${imageType}-url`).value = '';
+                    container.innerHTML = '';
+                };
+                
+                previewDiv.appendChild(img);
+                previewDiv.appendChild(removeBtn);
+                container.appendChild(previewDiv);
+            }
+        }
+
+        // Function to handle file upload
+        function setupFileUpload(uploadBtnId, fileInputId, urlInputId, previewContainerId, imageType) {
+            const uploadBtn = document.getElementById(uploadBtnId);
+            const fileInput = document.getElementById(fileInputId);
+            const urlInput = document.getElementById(urlInputId);
+            
+            uploadBtn.addEventListener('click', () => fileInput.click());
+            
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    
+                    // Check if file is an image
+                    if (!file.type.match('image.*')) {
+                        alert('Please select an image file');
+                        return;
+                    }
+                    
+                    // Check file size (max 2MB)
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('Image size should be less than 2MB');
+                        return;
+                    }
+                    
+                    readFileAsDataURL(file, function(dataUrl) {
+                        uploadedImages[imageType] = dataUrl;
+                        urlInput.value = '';
+                        createImagePreview(dataUrl, previewContainerId, imageType);
+                    });
+                }
+            });
+            
+            urlInput.addEventListener('input', function() {
+                if (this.value) {
+                    uploadedImages[imageType] = this.value;
+                    createImagePreview(this.value, previewContainerId, imageType);
+                } else {
+                    uploadedImages[imageType] = null;
+                    document.getElementById(previewContainerId).innerHTML = '';
+                }
+            });
+        }
+
+        // Function to get the appropriate image URL
+        function getImageUrl(imageType, fallbackUrl) {
+            if (uploadedImages[imageType]) {
+                return uploadedImages[imageType];
+            }
+            const urlInput = document.getElementById(`${imageType}-url`).value;
+            return urlInput || fallbackUrl;
+        }
+
         // Function to generate the email signature
         function generateSignature() {
             // Getting values from the form
@@ -889,13 +1260,13 @@
             const phone = document.getElementById('phone').value;
             const tel = document.getElementById('tel').value;
             const email = document.getElementById('email').value;
-            const website = document.getElementById('website').value;
+            const websiteInput = document.getElementById('website').value;
             const dubaiOffice = document.getElementById('dubai-office').value;
             const pakistanOffice = document.getElementById('pakistan-office').value;
-            const linkedin = document.getElementById('linkedin').value.trim();
-            const facebook = document.getElementById('facebook').value.trim();
-            const instagram = document.getElementById('instagram').value.trim();
-            const youtube = document.getElementById('youtube').value.trim();
+            const linkedinInput = document.getElementById('linkedin').value.trim();
+            const facebookInput = document.getElementById('facebook').value.trim();
+            const instagramInput = document.getElementById('instagram').value.trim();
+            const youtubeInput = document.getElementById('youtube').value.trim();
 
             // Basic validation to check if required fields are filled
             if (!name || !title || !phone || !email) {
@@ -903,11 +1274,26 @@
                 return;
             }
 
+            // Use default URLs if not provided
+            const website = websiteInput || DEFAULT_WEBSITE_URL;
+            const linkedin = linkedinInput || DEFAULT_LINKEDIN_URL;
+            const facebook = facebookInput || DEFAULT_FACEBOOK_URL;
+            const instagram = instagramInput || DEFAULT_INSTAGRAM_URL;
+            const youtube = youtubeInput || DEFAULT_YOUTUBE_URL;
+
             // Ensure website has proper URL format
             let formattedWebsite = website;
             if (formattedWebsite && !formattedWebsite.startsWith('http')) {
                 formattedWebsite = 'https://' + formattedWebsite;
             }
+
+            // Get image URLs (use uploaded or default)
+            const logoUrl = getImageUrl('logo', DEFAULT_LOGO_URL);
+            const bannerUrl = getImageUrl('banner', DEFAULT_BANNER_URL);
+            const linkedinIcon = getImageUrl('linkedinIcon', DEFAULT_LINKEDIN_ICON);
+            const facebookIcon = getImageUrl('facebookIcon', DEFAULT_FACEBOOK_ICON);
+            const instagramIcon = getImageUrl('instagramIcon', DEFAULT_INSTAGRAM_ICON);
+            const youtubeIcon = getImageUrl('youtubeIcon', DEFAULT_YOUTUBE_ICON);
 
             // Creating signature preview - using table-based layout for email compatibility
             const signatureHTML = `
@@ -923,7 +1309,7 @@
                             <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
                                     <td valign="top">
-                                        <img src="${LOGO_URL}" alt="Premier Choice International Logo" style="display: block; max-height: 90px; width: auto;">
+                                        <img src="${logoUrl}" alt="Premier Choice International Logo" style="display: block; max-height: 90px; width: auto;">
                                     </td>
                                     <td valign="top" style="padding-left: 15px;">
                                         <p style="margin: 0; padding: 0; font-size: 14px; line-height: 1.4;">
@@ -953,7 +1339,7 @@
                     </tr>
                     <tr>
                         <td style="padding: 10px 0;">
-                            <img src="${BANNER_URL}" alt="Premier Choice International Banner" style="display: block; max-width: 100%; height: auto; border: none;">
+                            <img src="${bannerUrl}" alt="Premier Choice International Banner" style="display: block; max-width: 100%; height: auto; border: none;">
                         </td>
                     </tr>
                     <tr>
@@ -962,25 +1348,25 @@
                                 <tr>
                                     <td style="padding-right: 15px;">
                                         <a href="${linkedin}" target="_blank" style="text-decoration: none; color: #000000;">
-                                            <img src="${LINKEDIN_ICON}" alt="LinkedIn" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
+                                            <img src="${linkedinIcon}" alt="LinkedIn" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
                                             LinkedIn
                                         </a>
                                     </td>
                                     <td style="padding-right: 15px;">
                                         <a href="${facebook}" target="_blank" style="text-decoration: none; color: #000000;">
-                                            <img src="${FACEBOOK_ICON}" alt="Facebook" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
+                                            <img src="${facebookIcon}" alt="Facebook" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
                                             Facebook
                                         </a>
                                     </td>
                                     <td style="padding-right: 15px;">
                                         <a href="${instagram}" target="_blank" style="text-decoration: none; color: #000000;">
-                                            <img src="${INSTAGRAM_ICON}" alt="Instagram" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
+                                            <img src="${instagramIcon}" alt="Instagram" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
                                             Instagram
                                         </a>
                                     </td>
                                     <td>
                                         <a href="${youtube}" target="_blank" style="text-decoration: none; color: #000000;">
-                                            <img src="${YOUTUBE_ICON}" alt="YouTube" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
+                                            <img src="${youtubeIcon}" alt="YouTube" style="display: inline-block; width: 24px; height: 24px; margin-right: 5px; vertical-align: middle;">
                                             YouTube
                                         </a>
                                     </td>
@@ -1009,7 +1395,7 @@
             document.getElementById('copy-btn').disabled = false;
         }
 
-        // FIXED: COMPLETELY REWRITTEN COPY FUNCTION TO PROPERLY HANDLE HTML FOR EMAIL CLIENTS
+        // Copy signature function
         async function copySignature() {
             const signatureHtml = document.getElementById('signature-html').innerHTML;
             
@@ -1097,6 +1483,24 @@
             // Initially disable the copy button
             document.getElementById('copy-btn').disabled = true;
             
+            // Setup file uploads
+            setupFileUpload('logo-browse-btn', 'logo-upload', 'logo-url', 'logo-preview-container', 'logo');
+            setupFileUpload('banner-browse-btn', 'banner-upload', 'banner-url', 'banner-preview-container', 'banner');
+            setupFileUpload('linkedin-icon-browse-btn', 'linkedin-icon-upload', 'linkedin-icon-url', 'linkedin-icon-preview-container', 'linkedinIcon');
+            setupFileUpload('facebook-icon-browse-btn', 'facebook-icon-upload', 'facebook-icon-url', 'facebook-icon-preview-container', 'facebookIcon');
+            setupFileUpload('instagram-icon-browse-btn', 'instagram-icon-upload', 'instagram-icon-url', 'instagram-icon-preview-container', 'instagramIcon');
+            setupFileUpload('youtube-icon-browse-btn', 'youtube-icon-upload', 'youtube-icon-url', 'youtube-icon-preview-container', 'youtubeIcon');
+            
+            // Setup "Use Default" buttons
+            document.querySelectorAll('.use-default-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    document.getElementById(`${target}-url`).value = '';
+                    uploadedImages[target] = null;
+                    document.getElementById(`${target}-preview-container`).innerHTML = '';
+                });
+            });
+            
             // Add form validation on input
             const requiredInputs = document.querySelectorAll('input[required]');
             requiredInputs.forEach(input => {
@@ -1154,6 +1558,15 @@
                     icon.classList.add('fa-moon');
                 }
             });
+            
+            // Set default values for optional fields
+            document.getElementById('website').value = '';
+            document.getElementById('dubai-office').value = "Office 1013, Onyx Tower 1, The Greens, Dubai, UAE.";
+            document.getElementById('pakistan-office').value = "Premier Choice, Bahria Food Street, Phase 7, Islamabad, Pakistan.";
+            document.getElementById('linkedin').value = '';
+            document.getElementById('facebook').value = '';
+            document.getElementById('instagram').value = '';
+            document.getElementById('youtube').value = '';
         });
     </script>
 </body>
